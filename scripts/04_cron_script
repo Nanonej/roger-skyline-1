@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CRON_FILE="/etc/cron.d/watchdog_crontab"
+
+if [ "$USER" != "root" ]; then
+	echo "Must be root!"
+	exit 1
+fi
+
+cp ./04 /root/04
+chmod 755 /root/04
+echo "0 0 * * * root /root/04" > "$CRON_FILE"
+chmod 755 "$CRON_FILE"

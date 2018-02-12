@@ -1,0 +1,18 @@
+#!/bin/bash
+
+PREV="/.md5_crontab"
+CHECK=`md5sum /etc/crontab | cut -d' ' -f1`
+
+if [ ! -f $PREV ]; then
+	echo "$CHECK" > $PREV
+	exit
+fi
+
+DIFF=`diff $PREV <(echo "$CHECK")`
+
+if [ -z "$DIFF" ]; then
+	exit
+fi
+
+echo "File /etc/crontab was modified" | mail -s "MODIFICATION ON CRONTAB FILE" root
+echo "$CHECK" > $PREV
