@@ -1,0 +1,12 @@
+#!/bin/bash
+
+UPDT_CMD="apt-get update -y >> /var/log/update_script.log 2>&1 && apt-get upgrade -y >> /var/log/update_script.log 2>&1"
+CRON_FILE="/etc/cron.weekly/updt_pkg"
+
+if [ "$USER" != "root" ]; then
+	echo "Must be root!"
+	exit 1
+fi
+
+echo "0 4 * * 1 root $UPDT_CMD" > "$CRON_FILE"
+chmod 755 "$CRON_FILE"
